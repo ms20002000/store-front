@@ -8,7 +8,7 @@ const Products = ({ isHome=false }) => {
 
     useEffect( () =>{
         const fetchProducts = async () => {
-            const apiUrl = isHome ? '/api/menu/products/?_limit=3' : '/api/menu/products/'
+            const apiUrl = isHome ? '/api/menu/products/?limit=4' : '/api/menu/products/'
             try {
                 const res = await fetch(apiUrl);
                 const data = await res.json();
@@ -30,7 +30,7 @@ const Products = ({ isHome=false }) => {
           {isHome ? 'Products' : 'All Products'} 
         </h2>
             {loading ? (<Spinner loading={loading} />):( 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             { products['results'].map((product) => (
                 <Product key={product.id} product={product} />
             )) }

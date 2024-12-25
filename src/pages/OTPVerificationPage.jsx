@@ -7,6 +7,7 @@
     const [otp, setOtp] = useState("");
     const [searchParams] = useSearchParams();
     const email = searchParams.get("email");
+    const is_login_code = searchParams.get("is_login_code");
 
     const navigate = useNavigate();
 
@@ -17,7 +18,7 @@
         const formData = new FormData();
         formData.append("email", email);
         formData.append("otp_code", otp);
-        formData.append("is_login_code", true);
+        formData.append("is_login_code", is_login_code);
     
         const response = await axios.post("/api/account/verify-register/", formData, {
           headers: {
@@ -26,6 +27,7 @@
         });
 
         toast.success("OTP Verified! Redirecting to Home...");
+        localStorage.setItem('refresh_token', response.data.refresh)
         navigate("/");
       } catch (error) {
         toast.error(error.message || "OTP Verification failed!");

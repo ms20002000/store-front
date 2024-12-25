@@ -42,7 +42,7 @@ const CategoryProductsPage = () => {
               >
                 <img
                   className="w-full h-48 object-cover rounded-lg mb-4"
-                  src={product.product_photo}
+                  src={product.product_file[0].product_photo}
                   alt={product.name}
                 />
                 <h3 className="text-xl font-bold">{product.name}</h3>

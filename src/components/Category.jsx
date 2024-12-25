@@ -1,8 +1,15 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Category = ({ category }) => {
+  const navigate = useNavigate();
+
+    const handleProductClick = () => {
+      navigate(`/${category.name}/products/`);
+    };
   return (
-    <div className="bg-white rounded-xl shadow-md relative">
+    <div className="bg-white rounded-xl shadow-md relative cursor-pointer transform hover:translate-y-2 hover:shadow-lg transition duration-300 ease-in-out" 
+    onClick={handleProductClick}>      
       <div className="p-4">
         <div className="flex">
           <img
@@ -13,12 +20,7 @@ const Category = ({ category }) => {
         </div>
 
         <div className="flex justify-center mt-3">
-          <Link
-            to={`/${category.name}/products/`}
-            className="bg-indigo-500 text-black px-4 py-2 rounded-lg hover:bg-indigo-700"
-          >
             {category.name}
-          </Link>
         </div>
       </div>
     </div>

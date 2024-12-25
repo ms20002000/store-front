@@ -2,11 +2,14 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import useAuthRedirect from "../components/UseAuthRedirect";
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
-
   const navigate = useNavigate();
+
+  useAuthRedirect();
 
   const verifyEmail = async (e) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ const LoginPage = () => {
       });
 
       toast.success("Email Verified! Check your Email...");
-      navigate(`/otpVerification/?email=${email}`);
+      navigate(`/otpVerification/?email=${email}&is_login_code=${true}`);
     } catch (error) {
       toast.error(error.message || "OTP Verification failed!");
     }

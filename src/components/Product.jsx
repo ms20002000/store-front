@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Product = ({ product }) => {
@@ -10,18 +11,25 @@ const Product = ({ product }) => {
             description = description.substring(0, 90) + '...';
         }
 
+    const navigate = useNavigate();
+
+    const handleProductClick = () => {
+      navigate(`/products/${product.name}`);
+    };
+
   return (
-    <div className="bg-white rounded-xl shadow-md relative">
+    <div className="bg-white rounded-xl shadow-md relative cursor-pointer transform hover:translate-y-2 hover:shadow-lg transition duration-300 ease-in-out" 
+    onClick={handleProductClick}>
                 <div className="p-4">
                     <div>
                         <img
                             className="w-full h-48 object-cover rounded-lg"
-                            src={product.product_photo}
+                            src={product.product_file[0].product_photo}
                             alt={product.name}
                         />
                     </div>
                 <div className="mb-6">
-                    <div className="text-gray-600 my-2">{ product.brand }</div>
+                    <div className="text-gray-600 my-2">{ product.teacher }</div>
                     <h3 className="text-xl font-bold">{ product.price }</h3>
                   </div>
 

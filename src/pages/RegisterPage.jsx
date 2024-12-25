@@ -31,6 +31,7 @@ const RegisterPage = () => {
       formData.append("password", password);
       formData.append("phone_number", phoneNumber);
       formData.append("address", address);
+
       if (profilePicture) {
         formData.append("profile_picture", profilePicture);
       }
@@ -43,7 +44,7 @@ const RegisterPage = () => {
     
       toast.success("Registration successful! Check your email for the OTP.");
       
-      navigate(`/otpVerification/?email=${email}`);
+      navigate(`/otpVerification/?email=${email}&is_login_code=${false}`);
     } catch (error) {
       console.error("Error:", error);
   

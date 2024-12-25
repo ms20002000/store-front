@@ -8,7 +8,7 @@ const Categories = ({ isHome = false }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       const apiUrl = isHome
-        ? "/api/menu/categories/?_limit=3"
+        ? "/api/menu/categories/?limit=4"
         : "/api/menu/categories/";
       try {
         const res = await fetch(apiUrl);
@@ -32,7 +32,7 @@ const Categories = ({ isHome = false }) => {
         {loading ? (
           <Spinner loading={loading} />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Category key={category.id} category={category} />
             ))}
