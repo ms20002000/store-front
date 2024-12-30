@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import Product from "../components/Product";
 
 const CategoryProductsPage = () => {
   const { name } = useParams(); 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log(name)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,26 +34,14 @@ const CategoryProductsPage = () => {
         {loading ? (
           <Spinner loading={loading} />
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white rounded-lg shadow-md p-4"
-              >
-                <img
-                  className="w-full h-48 object-cover rounded-lg mb-4"
-                  src={product.product_file[0].product_photo}
-                  alt={product.name}
-                />
-                <h3 className="text-xl font-bold">{product.name}</h3>
-                <p className="text-gray-500">{product.brand}</p>
-                <p className="text-indigo-600 font-bold">${product.price}</p>
-              </div>
-            ))}
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            { products.map((product) => (
+                <Product key={product.id} product={product} />
+            )) }
           </div>
         ) : (
           <p className="text-center text-gray-500">No products found.</p>
-        )}
+        )} 
       </div>
     </section>
   );

@@ -16,7 +16,6 @@ const useAuthRedirect = () => {
           });
           document.cookie = `access_token=${response.data.access}; path=/;`;
 
-          navigate("/");
         } catch (err) {
           console.log("Tokens expired or invalid. Redirecting to login page.");
           localStorage.removeItem("refresh_token"); 

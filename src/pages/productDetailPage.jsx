@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import axios from "axios";
+import { useCart } from "../components/Cookies";
+
 
 const ProductDetailPage = () => {
   const { productName } = useParams(); 
@@ -14,7 +16,6 @@ const ProductDetailPage = () => {
       try {
         const res = await axios.get(apiUrl); 
         const data = res.data; 
-        console.log(data);
         setProduct(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
@@ -67,28 +68,38 @@ const ProductDetailPage = () => {
           <div>
             <h3 className="text-2xl font-bold mb-4">Details</h3>
             <p className="mb-2">
-              <strong>Teacher:</strong> {product.teacher}
-            </p>
-            <p className="mb-2">
-              <strong>Price:</strong> ${product.price}
-            </p>
-            <p className="mb-2">
               <strong>Description:</strong> {product.description}
             </p>
-            <p className="mb-2">
+            <div className="grid grid-cols-3">
+            <p className="m-2 bg-white rounded-l shadow-md p-2">
+              <strong>Teacher:</strong> {product.teacher}
+            </p>
+            <p className="m-2 bg-white rounded-l shadow-md p-2">
+              <strong>Price:</strong> ${product.price}
+            </p>
+            <p className="m-2 bg-white rounded-l shadow-md p-2">
               <strong>Category:</strong> {product.category.name}
             </p>
             {product.discount && (
-              <p className="mb-2">
+              <p className="m-2 bg-white rounded-l shadow-md p-2">
                 <strong>Discount:</strong> {product.discount.name}
               </p>
             )}
-            <p className="mb-2">
+            <p className="m-2 bg-white rounded-l shadow-md p-2">
               <strong>Course Time:</strong> {product.course_time}
             </p>
-            <p className="mb-2">
+            <p className="m-2 bg-white rounded-l shadow-md p-2">
               <strong>Prerequisite:</strong> {product.prerequisite}
             </p>
+            </div>
+            <hr />
+            <div className="grid grid-cols-5 mt-2">
+            <p className="mb-2 bg-indigo-500 text-white rounded-lg px-4 py-2 cursor-pointer"
+            onClick={() => useCart.addToCart(product)}
+            >
+              Add to cart
+            </p>
+            </div>
 
             <h3 className="text-2xl font-bold mt-6 mb-4">Topics</h3>
             {product.product_topic_file.length > 0 ? (

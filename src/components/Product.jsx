@@ -24,24 +24,28 @@ const Product = ({ product }) => {
                     <div>
                         <img
                             className="w-full h-48 object-cover rounded-lg"
-                            src={product.product_file[0].product_photo}
+                            src={
+                              product.product_file && product.product_file.length > 0 && product.product_file[0].product_photo 
+                              ? product.product_file[0].product_photo 
+                              : "https://via.placeholder.com/150"
+                            }
                             alt={product.name}
                         />
                     </div>
                 <div className="mb-6">
-                    <div className="text-gray-600 my-2">{ product.teacher }</div>
-                    <h3 className="text-xl font-bold">{ product.price }</h3>
+                    <div className="text-gray-600 my-2">Teacher: { product.teacher }</div>
+                    <h3 className="text-xl font-bold">Price: { product.price }</h3>
                   </div>
 
                 <div className="mb-5">
-                    { description }
+                    Descriptoin: { description }
                   </div>
                   <button onClick={ () => setShowFullDescription((prevState) => !prevState) } className='text-indigo-500 mb-5 hover:text-indigo-600'>
                     { showFullDescription ? 'Less' : 'More' }
                   </button>
 
                   <div className="mb-6">
-                    <h3 className="text-xl font-bold">{ product.name }</h3>
+                    <h3 className="text-xl font-bold">Name: { product.name }</h3>
                   </div>
                 </div>
     </div>

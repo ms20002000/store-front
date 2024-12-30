@@ -10,6 +10,9 @@ import CategoryProductsPage from './pages/CategoryProductsPage'
 import OTPVerificationPage from './pages/OTPVerificationPage'
 import LoginPage from './pages/LoginPage'
 import ProductDetailPage from './pages/productDetailPage'
+import SearchResults from './pages/SearchPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
       <Route path='/register/' element={ <RegisterPage /> } />
       <Route path="/otpVerification/" element={<OTPVerificationPage />} />
       <Route path="/login/" element={<LoginPage />} />
+      <Route path="/search/" element={<SearchResults />} />
+      <Route path="/cart/" element={<CartPage />} />
+      <Route path="/checkout/" element={<CheckoutPage />}/>
       <Route path='*' element={ <NotFoundPage /> } />
     </Route>
     )

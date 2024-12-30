@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import useAuthRedirect from "../components/UseAuthRedirect";
@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  useAuthRedirect();
+  useAuthRedirect() 
 
   const verifyEmail = async (e) => {
     e.preventDefault();
@@ -55,6 +55,11 @@ const LoginPage = () => {
               Verify Email
             </button>
           </form>
+          <div className="mt-2 text-center"> If you dont have account click on<br/> 
+          <NavLink to='/register' className='hover:font-bold'>
+             Register
+          </NavLink>
+          </div>
         </div>
       </div>
     </section>
