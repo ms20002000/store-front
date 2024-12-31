@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 
 function ContactUs() {
+    const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    role: "teacher", // default role
-    resume: "",
+    role: "T", 
+    resume: null,
     message: "",
   });
 
@@ -14,12 +19,28 @@ function ContactUs() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    try{
+        const response = await axios.post("/api/contact_us/", formData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+        
+          toast.success("Request successfully Sent!");
+          navigate('/');
+    } catch (error) {
+        console.error("Error:", error);
+    
+        if (error.response && error.response.data) {
+          toast.error(error.response.data.message || "Send Request failed!");
+        } else {
+          toast.error("Send Request failed!");
+        }
+      }
 
-    // TODO: Send formData to the server
-    alert("Your request has been submitted. We'll get back to you soon.");
+
   };
 
   return (
@@ -73,8 +94,8 @@ function ContactUs() {
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             >
-              <option value="teacher">Teacher</option>
-              <option value="student">Student</option>
+              <option value="T">Teacher</option>
+              <option value="S">Student</option>
             </select>
           </div>
 
