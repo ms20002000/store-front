@@ -3,7 +3,7 @@ import Hero from '../components/Hero'
 import HomeCards from '../components/HomeCards'
 import Categories from '../components/Categories'
 import Products from '../components/Products'
-import ViewAllJobs from '../components/ViewAllJobs'
+import ViewAllProducs from '../components/ViewAllProducs'
 
 function HomePage() {
   return (
@@ -12,7 +12,7 @@ function HomePage() {
     <HomeCards />
     <Categories isHome={true} />
     <Products isHome={true} />
-    <ViewAllJobs />
+    <ViewAllProducs />
     </>
   )
 }

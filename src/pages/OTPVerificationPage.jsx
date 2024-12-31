@@ -1,4 +1,5 @@
   import { useState } from "react";
+  import Cookies from 'js-cookie';
   import { useNavigate, useSearchParams } from "react-router-dom";
   import { toast } from "react-toastify";
   import axios from "axios";
@@ -25,10 +26,14 @@
             "Content-Type": "application/json",
           },
         });
+        console.log(response)
 
         toast.success("OTP Verified! Redirecting to Home...");
         localStorage.setItem('refresh_token', response.data.refresh)
-        navigate("/");
+        localStorage.setItem("user_email", response.data.email);
+        localStorage.setItem("profile_picture", response.data.profile_picture);
+
+        window.location.href = "/";
       } catch (error) {
         toast.error(error.message || "OTP Verification failed!");
       }

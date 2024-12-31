@@ -42,7 +42,11 @@ const CartPage = () => {
               <div>
                 <img
                   className="w-full h-32 object-cover rounded-md"
-                  src={product.product_file[0].product_photo}
+                  src={
+                    product.product_file && product.product_file.length > 0 && product.product_file[0].product_photo 
+                    ? product.product_file[0].product_photo 
+                    : "https://via.placeholder.com/150"
+                  }
                   alt={product.name}
                 />
               </div>

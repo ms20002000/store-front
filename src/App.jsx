@@ -13,6 +13,8 @@ import ProductDetailPage from './pages/productDetailPage'
 import SearchResults from './pages/SearchPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
+import CustomerDashboard from './pages/CustomerDashboardPage'
+import ContactUs from './pages/ContactUsPage'
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
       <Route path="/search/" element={<SearchResults />} />
       <Route path="/cart/" element={<CartPage />} />
       <Route path="/checkout/" element={<CheckoutPage />}/>
+      <Route path="/customerDashboard/" element={<CustomerDashboard />}/>
+      <Route path="/contact_us/" element={<ContactUs />}/>
       <Route path='*' element={ <NotFoundPage /> } />
     </Route>
     )

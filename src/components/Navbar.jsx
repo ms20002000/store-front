@@ -6,10 +6,14 @@ import axios from "axios";
 
 function Navbar() {
   const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null); 
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false); 
+  const [email, setEmail] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +33,10 @@ function Navbar() {
         if (response.data.access) {
           document.cookie = `access_token=${response.data.access}; path=/;`;
           setIsLoggedIn(true);
+          const storedEmail = localStorage.getItem("user_email");
+          const storedProfilePicture = localStorage.getItem("profile_picture");
+          if (storedEmail) setEmail(storedEmail);
+          if (storedProfilePicture) setProfilePicture(storedProfilePicture);
         }
       } catch (error) {
         console.error("Token validation failed", error);
@@ -65,7 +73,10 @@ function Navbar() {
   const handleLogout = () => {
     document.cookie = "access_token=; Max-Age=0; path=/;";
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user_email");
+    localStorage.removeItem("profile_picture");
     setIsLoggedIn(false);
+    setUser(null);
     navigate("/");
   };
 
@@ -96,18 +107,17 @@ function Navbar() {
 
           <div className="md:ml-auto">
             <div className="flex space-x-2">
-            <div
-              className="relative"
-              onMouseEnter={() => setMenuOpen(true)} 
-              onMouseLeave={() => setMenuOpen(false)} 
-            >
-              {/* All Categories */}
-              <button className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
-                All Categories
-              </button>
+              <div
+                className="relative"
+                onMouseEnter={() => setMenuOpen(true)}
+                onMouseLeave={() => setMenuOpen(false)}
+              >
+                <button className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
+                  All Categories
+                </button>
 
-              {/* Dropdown Menu */}
-              {menuOpen && (
+                {/* Dropdown Menu */}
+               {menuOpen && (
                 <div
                   className="absolute bg-white border rounded-md shadow-md mt-2 w-48"
                   style={{ marginTop: "0px", paddingTop: "10px" }} 
@@ -153,8 +163,7 @@ function Navbar() {
                   </ul>
                 </div>
               )}
-            </div>
-
+              </div>
 
               {!isLoggedIn ? (
                 <NavLink
@@ -164,15 +173,53 @@ function Navbar() {
                   Login
                 </NavLink>
               ) : (
-                <button
-                  onClick={handleLogout}
-                  className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                <div
+                  className="relative"
+                  onMouseEnter={() => setUserMenuOpen(true)}
+                  onMouseLeave={() => setUserMenuOpen(false)}
                 >
-                  Logout
-                </button>
+                  <img
+                    src={"https://res.cloudinary.com/dodrvhrz7/image/upload/v1735643606/dummy-profile_duj4ez.png"}
+                    alt="User"
+                    className="h-10 w-10 rounded-full cursor-pointer"
+                  />
+                  {userMenuOpen && (
+                    <div className="absolute right-0 mt-0 bg-white border rounded-md shadow-md w-48 py-2">
+                      <div className="px-4 py-2 border-b text-center">
+                        <img
+                          src={profilePicture}
+                          alt="User Avatar"
+                          className="h-12 w-12 rounded-full mx-auto"
+                        />
+                        <p className="mt-2 font-semibold text-gray-700 text-sm truncate" title={email}>
+                          {email}
+                        </p>
+
+                      </div>
+                      <ul>
+                        <li>
+                          <NavLink
+                            to="/customerDashboard"
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          >
+                            Dashboard
+                          </NavLink>
+                        </li>
+                        <li>
+                          <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          >
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               )}
               <NavLink className="flex flex-shrink-0 items-center mr-4" to="/cart">
-                <img className="h-10 w-auto" src={cart} alt="React Jobs" />
+                <img className="h-10 w-auto" src={cart} alt="Cart" />
               </NavLink>
             </div>
           </div>
@@ -183,4 +230,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

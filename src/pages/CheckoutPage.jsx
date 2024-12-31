@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../components/Cookies";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import useAuthRedirect from "../components/UseAuthRedirect";
+import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
 
 
 const CheckoutPage = () => {
-    useAuthRedirect();
+  useAuthRedirect();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchedCart = useCart.getCart();
@@ -24,17 +29,51 @@ const CheckoutPage = () => {
 
   const handleApplyDiscount = () => {
     if (isDiscountApplied) {
-      alert("Discount code already applied.");
+      toast.error("Discount code already applied.");
       return;
     }
 
     if (discountCode === "DISCOUNT10") {
-      const discountedPrice = (totalPrice * 0.9).toFixed(2); 
+      const discountedPrice = (totalPrice * 0.9).toFixed(2);
       setTotalPrice(discountedPrice);
       setIsDiscountApplied(true);
-      alert("Discount applied successfully!");
+      toast.success("Discount applied successfully!");
     } else {
-      alert("Invalid discount code.");
+      toast.error("Invalid discount code.");
+    }
+  };
+
+  const handleCheckout = async () => {
+    setLoading(true);
+    const token = Cookies.get('access_token');
+
+    try {
+      const response = await axios.post(
+        "/api/order/create_order/",
+        {
+          cart,
+          total_price: totalPrice,
+          discount_code: discountCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        toast.success("Payment successful!");
+        Cookies.set('cart', '')
+        navigate("/customerDashboard/"); 
+      } else {
+        toast.error("Payment failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("An error occurred during checkout. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,7 +96,10 @@ const CheckoutPage = () => {
                   <div>
                     <img
                       className="w-full h-32 object-cover rounded-md"
-                      src={product.product_file[0].product_photo || "https://via.placeholder.com/150"}
+                      src={
+                        product.product_file[0]?.product_photo ||
+                        "https://via.placeholder.com/150"
+                      }
                       alt={product.name}
                     />
                   </div>
@@ -88,12 +130,15 @@ const CheckoutPage = () => {
                   Apply Discount
                 </button>
               </div>
-              <Link
-                to="/confirmation"
-                className="inline-block mt-4 bg-green-500 text-white rounded-lg px-6 py-2 hover:bg-green-600"
+              <button
+                onClick={handleCheckout}
+                disabled={loading}
+                className={`mt-4 ${
+                  loading ? "bg-gray-400" : "bg-green-500"
+                } text-white rounded-lg px-6 py-2 hover:bg-green-600`}
               >
-                Confirm and Pay
-              </Link>
+                {loading ? "Processing..." : "Confirm and Pay"}
+              </button>
             </div>
           </div>
         )}
