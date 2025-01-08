@@ -15,7 +15,6 @@ const CategoryProductsPage = () => {
         const res = await fetch(apiUrl);
         const data = await res.json();
         setProducts(data);
-        console.log(data)
       } catch (error) {
         console.log("Error fetching products:", error);
       } finally {

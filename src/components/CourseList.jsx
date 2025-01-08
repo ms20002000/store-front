@@ -1,29 +1,28 @@
-import React from "react";
+import Product from './Product';
+import Spinner from './Spinner';
+import { useState, useEffect } from 'react';
+
+
 
 const CourseList = ({ courses }) => {
+  const [loading, setLoading] = useState(false);
   return (
-    <div>
-      <h3 className="text-2xl font-bold text-indigo-600 mb-4">Your Courses</h3>
-      {courses.length === 0 ? (
-        <p className="text-gray-500">No courses found.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {courses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-white p-4 rounded-lg shadow-md text-center"
-            >
-              <h4 className="font-bold text-lg">{course.name}</h4>
-              <p className="text-gray-500">{course.description}</p>
-              <p className="font-bold text-indigo-600">
-                Purchased on: {new Date(course.purchase_date).toLocaleDateString()}
-              </p>
+    <section className="bg-blue-50 px-4 py-10">
+      <div className="container-xl lg:container m-auto">
+        <h2 className="text-2xl font-bold text-indigo-500 mb-6 text-center">
+          Your Courses
+        </h2>
+            {loading ? (<Spinner loading={loading} />):( 
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            { courses.map((product) => (
+                <Product key={product.id} product={product} />
+            )) }
             </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+            )}
+    
+      </div>
+    </section>
+  )
 };
 
 export default CourseList;

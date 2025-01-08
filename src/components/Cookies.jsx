@@ -18,6 +18,7 @@ export const useCart = {
     
     toast.success("Your product successfully added");
     Cookies.set('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('cartChange'));
   },
 
   getCart: () => {

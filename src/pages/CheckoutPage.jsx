@@ -27,21 +27,45 @@ const CheckoutPage = () => {
     setTotalPrice(calculatedTotal);
   }, []);
 
-  const handleApplyDiscount = () => {
+
+  const handleApplyDiscount = async () => {
     if (isDiscountApplied) {
       toast.error("Discount code already applied.");
       return;
     }
-
-    if (discountCode === "DISCOUNT10") {
-      const discountedPrice = (totalPrice * 0.9).toFixed(2);
-      setTotalPrice(discountedPrice);
-      setIsDiscountApplied(true);
-      toast.success("Discount applied successfully!");
-    } else {
-      toast.error("Invalid discount code.");
+  
+    if (!discountCode) {
+      toast.error("Please enter a discount code.");
+      return;
+    }
+  
+    try {
+      // Send discount code to the backend
+      const token = Cookies.get('access_token');
+      const response = await axios.post("/api/discount/use_coupon/", {
+        code: discountCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+  
+      if (response.data.success) {
+        const discountedPrice = (totalPrice * (1 - response.data.discount / 100)).toFixed(2);
+        setTotalPrice(discountedPrice);
+        setIsDiscountApplied(true);
+        toast.success("Discount applied successfully!");
+      } else {
+        toast.error(response.data.error || "Failed to apply discount.");
+        setIsDiscountApplied(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.error || "An error occurred while applying the discount.");
     }
   };
+  
 
   const handleCheckout = async () => {
     setLoading(true);

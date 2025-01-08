@@ -22,12 +22,13 @@ const CustomerDashboard = () => {
           axios.get("/api/order/order_history/", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-        //   axios.get("/api/courses/", {
-        //     headers: { Authorization: `Bearer ${token}` },
-        //   }),
+          axios.get("/api/account/user/products/", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
         setOrders(ordersRes.data);
-        // setCourses(coursesRes.data);
+        setCourses(coursesRes.data.products);
+
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data. Please try again.");
@@ -47,8 +48,8 @@ const CustomerDashboard = () => {
         <p className="text-center text-gray-500">Loading...</p>
       ) : (
         <div className="space-y-10">
+          <CourseList courses={courses} />
           <OrderList orders={orders} />
-          {/* <CourseList courses={courses} /> */}
         </div>
       )}
     </div>

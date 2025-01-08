@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import Cookies from 'js-cookie';
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import cart from "../assets/images/cart.png";
 import axios from "axios";
 
 function Navbar() {
+  const [cartCount, setCartCount] = useState(0);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,6 +44,24 @@ function Navbar() {
         console.error("Token validation failed", error);
         setIsLoggedIn(false);
       }
+
+      // Update cart count from cookies
+    const updateCartCount = () => {
+      const cart = Cookies.get("cart");
+      const cartItems = cart ? JSON.parse(cart) : [];
+      setCartCount(cartItems.length);
+    };
+
+    updateCartCount();
+
+    // Watch for changes in the cart
+    const cartChangeHandler = () => updateCartCount();
+    window.addEventListener("cartChange", cartChangeHandler);
+
+    return () => {
+      window.removeEventListener("cartChange", cartChangeHandler);
+    };
+
     };
 
     checkLoginStatus();
@@ -49,7 +69,7 @@ function Navbar() {
     // Fetch categories from the API
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/api/menu/categories/");
+        const res = await fetch("/api/menu/allcategories/");
         const data = await res.json();
         setCategories(data);
       } catch (error) {
@@ -139,16 +159,17 @@ function Navbar() {
                         </NavLink>
 
                         {/* Sub Categories */}
-                        {/* {activeCategory === category.id && (
+                        {activeCategory === category.id && category.subcategories.length > 0 && (
                           <div
-                            className="absolute bg-gray-100 border rounded-md shadow-md mt-0 w-48 left-full top-0"
+                            className="absolute bg-gray-100 border rounded-md shadow-md mt-0 w-48 right-full top-0"
                             style={{ paddingLeft: "10px" }}
                           >
                             <ul className="py-2">
+                              {console.log(category.subcategories)}
                               {category.subcategories.map((sub) => (
                                 <li key={sub.id}>
                                   <NavLink
-                                    to={`/${category.name}/${sub.name}/products/`}
+                                    to={`/${sub.name}/products/`}
                                     className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
                                   >
                                     {sub.name}
@@ -157,7 +178,7 @@ function Navbar() {
                               ))}
                             </ul>
                           </div>
-                        )} */}
+                        )} 
                       </li>
                     ))}
                   </ul>
@@ -220,6 +241,11 @@ function Navbar() {
               )}
               <NavLink className="flex flex-shrink-0 items-center mr-4" to="/cart">
                 <img className="h-10 w-auto" src={cart} alt="Cart" />
+                {cartCount > 0 && (
+                <span className="absolute top-3 right-8 inline-flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                  {cartCount}
+                </span>
+              )}
               </NavLink>
             </div>
           </div>

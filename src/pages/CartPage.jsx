@@ -17,6 +17,8 @@ const CartPage = () => {
     setCart(updatedCart);
     // Update the cart in cookies
     Cookies.set("cart", JSON.stringify(updatedCart), { expires: 7});
+    window.dispatchEvent(new Event('cartChange'));
+
   };
 
   const calculateTotalPrice = () => {

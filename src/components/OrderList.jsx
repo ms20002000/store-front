@@ -3,7 +3,7 @@ import React from "react";
 const OrderList = ({ orders }) => {
   return (
     <div>
-      <h3 className="text-2xl font-bold text-indigo-600 mb-4">Your Orders</h3>
+      <h3 className="text-2xl font-bold text-center text-indigo-600 mb-4">Your Orders</h3>
       {orders.length === 0 ? (
         <p className="text-gray-500">No orders found.</p>
       ) : (

@@ -15,6 +15,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CustomerDashboard from './pages/CustomerDashboardPage'
 import ContactUs from './pages/ContactUsPage'
+import EditProfilePage from './pages/EditProfilePage'
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
       <Route path="/checkout/" element={<CheckoutPage />}/>
       <Route path="/customerDashboard/" element={<CustomerDashboard />}/>
       <Route path="/contact_us/" element={<ContactUs />}/>
+      <Route path="/edit_profile/" element={<EditProfilePage/>}/>
       <Route path='*' element={ <NotFoundPage /> } />
     </Route>
     )
