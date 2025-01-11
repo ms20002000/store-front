@@ -17,13 +17,13 @@ const useAuthRedirect = () => {
           document.cookie = `access_token=${response.data.access}; path=/;`;
 
         } catch (err) {
-          console.log("Tokens expired or invalid. Redirecting to login page.");
+          // console.log("Tokens expired or invalid. Redirecting to login page.");
           localStorage.removeItem("refresh_token"); 
-          navigate("/login");
+          navigate("/loginPassword");
         }
       } else {
-        console.log("No refresh token found. Redirecting to login page.");
-        navigate("/login");
+        // console.log("No refresh token found. Redirecting to login page.");
+        navigate("/loginPassword");
       }
     };
 

@@ -26,7 +26,6 @@
             "Content-Type": "application/json",
           },
         });
-        console.log(response)
 
         toast.success("OTP Verified! Redirecting to Home...");
         localStorage.setItem('refresh_token', response.data.refresh)

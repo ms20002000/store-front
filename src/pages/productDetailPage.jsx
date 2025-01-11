@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import axios from "axios";
 import { useCart } from "../components/Cookies";
+import Cookies from "js-cookie";
 
 
 const ProductDetailPage = () => {
@@ -12,11 +13,15 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     const fetchProductDetails = async () => {
+      const token = Cookies.get("access_token");
       const apiUrl = `/api/menu/products/${productName}/`;
       try {
-        const res = await axios.get(apiUrl); 
+        const res = await axios.get(apiUrl, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        }); 
         const data = res.data; 
         setProduct(data);
+
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {
@@ -33,7 +38,8 @@ const ProductDetailPage = () => {
   
   if (!product) {
     return <p className="text-center text-gray-500">Product not found.</p>;
-  }
+  };
+
 
   return (
     <section className="bg-gray-50 px-4 py-10">
@@ -63,7 +69,8 @@ const ProductDetailPage = () => {
                 )}
               </div>
             ))}
-          </div>
+          </div> 
+
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Details</h3>
@@ -109,24 +116,31 @@ const ProductDetailPage = () => {
                     key={index}
                     className="bg-white rounded-lg shadow-md p-4"
                   >
-                    <h4 className="text-lg font-bold">{topic.name}</h4>
+                    <h4 className="text-lg font-bold">{topic.title}</h4>
                     <p className="text-gray-500">{topic.description}</p>
-                    {topic.product_photo && (
+                    {topic.topic_photo && (
                       <img
                         className="w-full h-48 object-cover rounded-lg mt-4"
-                        src={topic.product_photo}
-                        alt={topic.name}
+                        src={topic.topic_photo}
+                        alt={topic.title}
                       />
                     )}
-                    {topic.product_movie && (
-                      <video
-                        className="w-full mt-4 rounded-lg"
-                        controls
-                        src={topic.product_movie}
-                      >
-                        Your browser does not support the video tag.
-                      </video>
-                    )}
+
+                    {topic.topic_media.map((media, mediaIndex) => (
+                      <div key={mediaIndex} className="mt-4">
+                        {media.topic_movie && (
+                          <video
+                            className="w-full h-48 object-cover rounded-lg"
+                            controls
+                            src={media.topic_movie}
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        )}
+                      </div>
+                    ))}
+
+                    
                   </div>
                 ))}
               </div>

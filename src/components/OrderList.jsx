@@ -14,7 +14,7 @@ const OrderList = ({ orders }) => {
               className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
             >
               <div>
-                <p className="font-bold">Order ID: {order.id}</p>
+                <p className="font-bold">Order Information: {order.id}</p>
                 <p>Status: {order.status}</p>
                 <p>Total Price: ${order.total_price}</p>
                 <p>Date: {new Date(order.created_at).toLocaleDateString()}</p>
@@ -24,7 +24,7 @@ const OrderList = ({ orders }) => {
                 <ul>
                   {order.items.map((item) => (
                     <li key={item.id} className="text-gray-600">
-                      {item.product} - ${item.price}
+                      {item.product_name} - ${item.price}
                     </li>
                   ))}
                 </ul>

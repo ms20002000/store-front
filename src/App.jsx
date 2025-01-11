@@ -16,6 +16,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import CustomerDashboard from './pages/CustomerDashboardPage'
 import ContactUs from './pages/ContactUsPage'
 import EditProfilePage from './pages/EditProfilePage'
+import LoginPasswordPage from './pages/LoginPasswordPage'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Route path='/register/' element={ <RegisterPage /> } />
       <Route path="/otpVerification/" element={<OTPVerificationPage />} />
       <Route path="/login/" element={<LoginPage />} />
+      <Route path="/loginPassword/" element={<LoginPasswordPage />} />
       <Route path="/search/" element={<SearchResults />} />
       <Route path="/cart/" element={<CartPage />} />
       <Route path="/checkout/" element={<CheckoutPage />}/>

@@ -96,8 +96,7 @@ function Navbar() {
     localStorage.removeItem("user_email");
     localStorage.removeItem("profile_picture");
     setIsLoggedIn(false);
-    setUser(null);
-    navigate("/");
+    window.location.href = "";
   };
 
   return (
@@ -188,7 +187,7 @@ function Navbar() {
 
               {!isLoggedIn ? (
                 <NavLink
-                  to="/login"
+                  to="/loginPassword"
                   className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
                 >
                   Login
@@ -224,6 +223,14 @@ function Navbar() {
                             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                           >
                             Dashboard
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to="/edit_profile"
+                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          >
+                            Edit Profile
                           </NavLink>
                         </li>
                         <li>
