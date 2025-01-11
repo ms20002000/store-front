@@ -164,7 +164,6 @@ function Navbar() {
                             style={{ paddingLeft: "10px" }}
                           >
                             <ul className="py-2">
-                              {console.log(category.subcategories)}
                               {category.subcategories.map((sub) => (
                                 <li key={sub.id}>
                                   <NavLink

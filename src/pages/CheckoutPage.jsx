@@ -5,6 +5,7 @@ import axios from "axios";
 import useAuthRedirect from "../components/UseAuthRedirect";
 import { toast } from "react-toastify";
 import Cookies from 'js-cookie';
+import CheckPurchasedProducts from "../components/CheckPurchasedProducts";
 
 
 const CheckoutPage = () => {
@@ -12,6 +13,7 @@ const CheckoutPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
+  const [inputDiscountCode, setInputDiscountCode] = useState("");
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const CheckoutPage = () => {
       return;
     }
   
-    if (!discountCode) {
+    if (!inputDiscountCode) {
       toast.error("Please enter a discount code.");
       return;
     }
@@ -43,7 +45,7 @@ const CheckoutPage = () => {
       // Send discount code to the backend
       const token = Cookies.get('access_token');
       const response = await axios.post("/api/discount/use_coupon/", {
-        code: discountCode,
+        code: inputDiscountCode,
       },
       {
         headers: {
@@ -54,6 +56,7 @@ const CheckoutPage = () => {
       if (response.data.success) {
         const discountedPrice = (totalPrice * (1 - response.data.discount / 100)).toFixed(2);
         setTotalPrice(discountedPrice);
+        setDiscountCode(inputDiscountCode);
         setIsDiscountApplied(true);
         toast.success("Discount applied successfully!");
       } else {
@@ -90,6 +93,7 @@ const CheckoutPage = () => {
         toast.success("Payment successful!");
         Cookies.set('cart', '')
         navigate("/customerDashboard/"); 
+        window.dispatchEvent(new Event('cartChange'));
       } else {
         toast.error("Payment failed. Please try again.");
       }
@@ -103,6 +107,7 @@ const CheckoutPage = () => {
 
   return (
     <section className="bg-gray-50 px-4 py-10">
+      <CheckPurchasedProducts cart={cart} setCart={setCart} setTotalPrice={setTotalPrice} />
       <div className="container m-auto">
         <h2 className="text-3xl font-bold text-indigo-500 mb-6 text-center">
           Checkout
@@ -143,8 +148,8 @@ const CheckoutPage = () => {
                 <input
                   type="text"
                   placeholder="Enter discount code"
-                  value={discountCode}
-                  onChange={(e) => setDiscountCode(e.target.value)}
+                  value={inputDiscountCode}
+                  onChange={(e) => setInputDiscountCode(e.target.value)}
                   className="border rounded-lg px-4 py-2 w-2/3 md:w-1/3"
                 />
                 <button
