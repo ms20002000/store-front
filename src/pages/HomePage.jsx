@@ -4,6 +4,7 @@ import HomeCards from '../components/HomeCards'
 import Categories from '../components/Categories'
 import Products from '../components/Products'
 import ViewAllProducs from '../components/ViewAllProducs'
+import Footer from '../components/Footer'
 
 function HomePage() {
   return (
@@ -13,6 +14,7 @@ function HomePage() {
     <Categories isHome={true} />
     <Products isHome={true} />
     <ViewAllProducs />
+    <Footer/>
     </>
   )
 }
