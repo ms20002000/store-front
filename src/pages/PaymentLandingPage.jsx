@@ -42,6 +42,10 @@ const PaymentLandingPage = () => {
   const handleReturn = () => {
     navigate('/');
   };
+ 
+  const handleReturnSuccess = () => {
+    navigate('/customerDashboard');
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -50,10 +54,10 @@ const PaymentLandingPage = () => {
         <p className="text-gray-700 mb-6">{message}</p>
         {paymentStatus === 'success' && (
           <button
-            onClick={handleReturn}
+            onClick={handleReturnSuccess}
             className="bg-indigo-500 text-white px-6 py-2 rounded-lg hover:bg-indigo-600"
           >
-            Return to Home
+            Return to Dashboard
           </button>
         )}
         {paymentStatus !== 'success' && (

@@ -2,14 +2,58 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import axios from "axios";
-import { useCart } from "../components/Cookies";
 import Cookies from "js-cookie";
+import { useCart } from "../components/Cookies";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
+const CustomPrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <button
+      onClick={onClick}
+      className="absolute left-2 top-32 transform -translate-y-1/2 text-black rounded-full p-2 hover:bg-zinc-500 z-10"
+    >
+      &#8592;
+    </button>
+  );
+};
+
+const CustomNextArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <button
+      onClick={onClick}
+      className="absolute right-2 top-32 transform -translate-y-1/2 text-black rounded-full p-2 hover:bg-zinc-500 z-10"
+    >
+      &#8594;
+    </button>
+  );
+};
 
 const ProductDetailPage = () => {
   const { productName } = useParams(); 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  const settings = {
+    dots: true,
+    infinite: product?.product_file?.length > 1,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+    customPaging: (i) => (
+      <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+    ),
+    appendDots: (dots) => (
+      <div style={{ position: 'absolute', top: '230px', left: '50%', transform: 'translateX(-50%)' }}>
+        <ul style={{ margin: '0px' }}>{dots}</ul>
+      </div>
+    ),
+  };
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -19,9 +63,7 @@ const ProductDetailPage = () => {
         const res = await axios.get(apiUrl, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         }); 
-        const data = res.data; 
-        setProduct(data);
-
+        setProduct(res.data);
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {
@@ -31,15 +73,14 @@ const ProductDetailPage = () => {
   
     fetchProductDetails();
   }, [productName]);
-  
+
   if (loading) {
     return <Spinner loading={loading} />;
   }
-  
+
   if (!product) {
     return <p className="text-center text-gray-500">Product not found.</p>;
-  };
-
+  }
 
   return (
     <section className="bg-gray-50 px-4 py-10">
@@ -48,29 +89,38 @@ const ProductDetailPage = () => {
           {product.name}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            {product.product_file.map((file, index) => (
-              <div key={index} className="flex flex-col items-center">
-                {file.product_photo && (
-                  <img
-                    className="w-full h-64 object-cover rounded-lg"
-                    src={file.product_photo}
-                    alt={`Product Photo ${index + 1}`}
-                  />
-                )}
-                {file.product_movie && (
-                  <video
-                    className="w-full mt-4 rounded-lg"
-                    controls
-                    src={file.product_movie}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                )}
-              </div>
-            ))}
-          </div> 
-
+          {
+            product.product_file && product.product_file.length > 0 ? (
+              <Slider {...settings}>
+                {product.product_file.map((file, index) => (
+                  <div key={index}>
+                    {file.product_photo && (
+                      <img
+                        src={file.product_photo}
+                        alt={`Product Photo ${index + 1}`}
+                        className="w-full h-64 object-cover rounded-lg"
+                      />
+                    )}
+                    {file.product_movie && (
+                      <video
+                        className="w-full mt-4 rounded-lg"
+                        controls
+                        src={file.product_movie}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                  </div>
+                ))}
+              </Slider>
+            ) : (
+              <img
+                src="https://res.cloudinary.com/dodrvhrz7/image/upload/v1735037850/default_gseslf.jpg"
+                alt="Default Product"
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            )
+          }
 
           <div>
             <h3 className="text-2xl font-bold mb-4">Details</h3>
