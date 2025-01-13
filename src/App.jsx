@@ -17,6 +17,7 @@ import CustomerDashboard from './pages/CustomerDashboardPage'
 import ContactUs from './pages/ContactUsPage'
 import EditProfilePage from './pages/EditProfilePage'
 import LoginPasswordPage from './pages/LoginPasswordPage'
+import PaymentLandingPage from './pages/PaymentLandingPage'
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <Route path="/search/" element={<SearchResults />} />
       <Route path="/cart/" element={<CartPage />} />
       <Route path="/checkout/" element={<CheckoutPage />}/>
+      <Route path="/payment_landing_page/" element={<PaymentLandingPage />}/>
       <Route path="/customerDashboard/" element={<CustomerDashboard />}/>
       <Route path="/contact_us/" element={<ContactUs />}/>
       <Route path="/edit_profile/" element={<EditProfilePage/>}/>

@@ -47,7 +47,7 @@ const CartPage = () => {
                   src={
                     product.product_file && product.product_file.length > 0 && product.product_file[0].product_photo 
                     ? product.product_file[0].product_photo 
-                    : "https://via.placeholder.com/150"
+                    : "https://res.cloudinary.com/dodrvhrz7/image/upload/v1735037850/default_gseslf.jpg"
                   }
                   alt={product.name}
                 />

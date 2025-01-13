@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../components/Cookies";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, redirect } from "react-router-dom";
 import axios from "axios";
 import useAuthRedirect from "../components/UseAuthRedirect";
 import { toast } from "react-toastify";
@@ -90,9 +90,10 @@ const CheckoutPage = () => {
       );
 
       if (response.status === 201) {
-        toast.success("Payment successful!");
+        toast.success("Navigating To Payment Gateway");
+        console.log(response.data['url'])
+        window.location.href = response.data['url'];
         Cookies.set('cart', '')
-        navigate("/customerDashboard/"); 
         window.dispatchEvent(new Event('cartChange'));
       } else {
         toast.error("Payment failed. Please try again.");
@@ -127,7 +128,7 @@ const CheckoutPage = () => {
                       className="w-full h-32 object-cover rounded-md"
                       src={
                         product.product_file[0]?.product_photo ||
-                        "https://via.placeholder.com/150"
+                        "https://res.cloudinary.com/dodrvhrz7/image/upload/v1735037850/default_gseslf.jpg"
                       }
                       alt={product.name}
                     />
